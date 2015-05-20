@@ -26,7 +26,8 @@ makeCacheMatrix <- function(x = matrix()) {
 # The following function returns the inverse of the matrix. It first checks if
 # the inverse has already been computed. If so, it gets the result and skips the
 # computation. If not, it computes the inverse, sets the value in the cache via
-# setinverse function.
+# setinverse function. If you pass identity matrix/Singular it will display a message
+
 
 cacheSolve <- function(x, ...) {
        inv <- x$getinverse()
@@ -35,7 +36,16 @@ cacheSolve <- function(x, ...) {
         return(inv)
     }
     data <- x$get()
+if(checksingular(data) == TRUE){
     inv <- solve(data)
     x$setinverse(inv)
     inv
+}else{
+        print("The matrix is singular")
+      }
+
 }
+
+
+##Check if the matrix is singular
+checksingular <- function(m) class(try(solve(m), silent=T))=="matrix"
